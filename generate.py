@@ -53,8 +53,14 @@ def install_models(models):
     for model in models:
         command = LLMs[model]
         try:
-            print(f"Installing and running {model}...")
-            subprocess.run(command.split(), check=True)
+            print(f"Installing {model}...")
+            # Run the command to install the model, but don't block or enter interactive mode
+            process = subprocess.Popen(command.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            
+            # Wait for a few seconds to let the model initialize, then terminate it
+            time.sleep(10)  # Adjust the time as needed based on how long it takes to initialize
+            process.terminate()  # Terminate the process to prevent it from entering interactive mode
+            
             print(f"{model} installed successfully.")
             model_name = model
             payload_model_parameter = command.split(" ")[2]  # Extract the model name from the command
@@ -62,6 +68,7 @@ def install_models(models):
             print(f"Failed to install {model}: {e}")
 
     return model_name, payload_model_parameter
+
 
 # Main flow: Ask for user input and install selected models
 selected_models = select_models()
