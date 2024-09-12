@@ -34,7 +34,7 @@ pip install pandas requests
 
 ## File Structure
 
-```plaintext
+```
 .
 ├── README.md           # This file
 ├── initial_DS.csv  # CSV file containing vulnerability data
